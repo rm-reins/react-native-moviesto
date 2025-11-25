@@ -1,17 +1,15 @@
-import { Link } from "expo-router";
-import { Text, View } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function Index() {
+  const insets = useSafeAreaInsets();
+
   return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <Text>Welcome to Moviesto</Text>
-      <Link href="./Onboarding">Onboarding</Link>
-    </View>
+    <LinearGradient
+      colors={["#030014", "#A8B5DB"]}
+      start={{ x: 1, y: 0 }}
+      end={{ x: 1, y: 1 }}
+      style={{ flex: 1, paddingTop: insets.top }}
+    />
   );
 }
