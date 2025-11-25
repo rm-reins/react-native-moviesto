@@ -3,12 +3,22 @@ import { Ionicons } from "@expo/vector-icons";
 import { Tabs, useSegments } from "expo-router";
 import {
   GestureResponderEvent,
+  Platform,
   StyleProp,
+  StyleSheet,
   Text,
   TouchableOpacity,
   View,
   ViewStyle,
 } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+
+const TAB_BAR_HEIGHT = 80;
+const TAB_BAR_RADIUS = 30;
+const BUTTON_HEIGHT = 60;
+
+// Calculate proportional button radius to match tab bar curvature
+const BUTTON_RADIUS = Math.round(TAB_BAR_RADIUS * (BUTTON_HEIGHT / TAB_BAR_HEIGHT));
 
 interface TabButtonProps {
   onPress?: ((e: GestureResponderEvent | any) => void) | undefined;
@@ -34,17 +44,31 @@ const TabButton = ({
   activeColor,
   inactiveColor,
 }: TabButtonProps) => {
+  const mergedStyle = [
+    styles.tabButtonContainer,
+    style,
+    { justifyContent: "center" as const },
+    Platform.OS === "android" && styles.androidTabButton,
+  ];
+
   return (
     <TouchableOpacity
       onPress={onPress || (() => {})}
       testID={testID}
       className="flex-1 items-center justify-center"
-      style={style}
+      style={mergedStyle}
+      activeOpacity={0.7}
     >
       <View
-        className={`items-center justify-center rounded-[20px] py-2 px-4 min-h-[60px] min-w-[70px] ${
-          isSelected ? "bg-light-100/20" : "bg-transparent"
-        }`}
+        className="items-center justify-center px-4 min-w-[70px]"
+        style={[
+          {
+            backgroundColor: isSelected ? "rgba(168, 181, 219, 0.2)" : "transparent",
+            borderRadius: BUTTON_RADIUS,
+            minHeight: BUTTON_HEIGHT,
+          },
+          Platform.OS === "android" && { overflow: "hidden" },
+        ]}
       >
         <Ionicons
           name={isSelected ? iconName.focused : iconName.unfocused}
@@ -63,9 +87,24 @@ const TabButton = ({
   );
 };
 
+const styles = StyleSheet.create({
+  tabButtonContainer: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  androidTabButton: {
+    backgroundColor: "transparent",
+    borderRadius: 0,
+    elevation: 0,
+    overflow: "hidden",
+  },
+});
+
 const Layout = () => {
   const segments = useSegments();
   const currentTab = segments[1] || "index";
+  const insets = useSafeAreaInsets();
 
   return (
     <Tabs
@@ -74,11 +113,16 @@ const Layout = () => {
         tabBarInactiveTintColor: "#9CA4AB",
         tabBarStyle: {
           backgroundColor: "#000000",
-          borderTopColor: "#1C1C1C",
-          borderTopWidth: 1,
-          height: 80,
-          paddingBottom: 10,
-          paddingTop: 10,
+          height: TAB_BAR_HEIGHT,
+          justifyContent: "center",
+          borderTopWidth: 0,
+          borderRadius: TAB_BAR_RADIUS,
+          marginHorizontal: 20,
+          marginBottom: insets.bottom,
+          position: "absolute",
+        },
+        tabBarItemStyle: {
+          height: TAB_BAR_HEIGHT,
         },
         tabBarShowLabel: false,
         headerShown: false,
