@@ -1,13 +1,20 @@
 import SearchBar from "@/components/SearchBar";
+import { fetchMovies } from "@/services/api";
+import useFetch from "@/services/hooks/useFetch";
 import { LinearGradient } from "expo-linear-gradient";
 import { useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
-import { ScrollView, View } from "react-native";
+import { ActivityIndicator, ScrollView, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function Index() {
   const insets = useSafeAreaInsets();
   const router = useRouter();
+  const {
+    data: movies,
+    loading: moviesLoading,
+    error: moviesError,
+  } = useFetch(() => fetchMovies({ query: "" }));
 
   return (
     <View className="flex-1">
@@ -31,12 +38,24 @@ export default function Index() {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingTop: insets.top }}
       >
-        <View className="flex-1 mt-5">
-          <SearchBar
-            onSubmit={() => router.push("/search")}
-            placeholder="Search for a movie"
-          />
-        </View>
+        {moviesLoading ? (
+          <ActivityIndicator size="large" color="#A8B5DB" />
+        ) : moviesError ? (
+          <Text>Error: {moviesError?.message}</Text>
+        ) : (
+          <View className="flex-1 mt-5">
+            <SearchBar
+              onSubmit={() => router.push("/search")}
+              placeholder="Search for a movie"
+            />
+
+            <>
+              <Text className="text-lg text-white font-bold mt-5 mb-3">
+                Latest Movies
+              </Text>
+            </>
+          </View>
+        )}
       </ScrollView>
     </View>
   );
