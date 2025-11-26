@@ -1,10 +1,13 @@
+import SearchBar from "@/components/SearchBar";
 import { LinearGradient } from "expo-linear-gradient";
+import { useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { ScrollView, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function Index() {
   const insets = useSafeAreaInsets();
+  const router = useRouter();
 
   return (
     <View className="flex-1">
@@ -27,7 +30,14 @@ export default function Index() {
         className="flex-1"
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingTop: insets.top }}
-      ></ScrollView>
+      >
+        <View className="flex-1 mt-5">
+          <SearchBar
+            onSubmit={() => router.push("/search")}
+            placeholder="Search for a movie"
+          />
+        </View>
+      </ScrollView>
     </View>
   );
 }
