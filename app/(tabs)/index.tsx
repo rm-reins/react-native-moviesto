@@ -4,7 +4,7 @@ import useFetch from "@/services/hooks/useFetch";
 import { LinearGradient } from "expo-linear-gradient";
 import { useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
-import { ActivityIndicator, ScrollView, Text, View } from "react-native";
+import { ActivityIndicator, FlatList, ScrollView, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function Index() {
@@ -53,6 +53,23 @@ export default function Index() {
               <Text className="text-lg text-white font-bold mt-5 mb-3">
                 Latest Movies
               </Text>
+
+              <FlatList
+                data={movies}
+                renderItem={({ item }) => (
+                  <Text className="text-white text-sm">{item.title}</Text>
+                )}
+                keyExtractor={(item) => item.id}
+                numColumns={3}
+                columnWrapperStyle={{
+                  justifyContent: "flex-start",
+                  gap: 20,
+                  paddingRight: 5,
+                  marginBottom: 10,
+                }}
+                className="mt-2 pb-32"
+                scrollEnabled={false}
+              />
             </>
           </View>
         )}
