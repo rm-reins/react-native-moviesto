@@ -1,3 +1,4 @@
+import MovieCard from "@/components/MovieCard";
 import SearchBar from "@/components/SearchBar";
 import { fetchMovies } from "@/services/api";
 import useFetch from "@/services/hooks/useFetch";
@@ -43,7 +44,7 @@ export default function Index() {
         ) : moviesError ? (
           <Text>Error: {moviesError?.message}</Text>
         ) : (
-          <View className="flex-1 mt-5">
+          <View className="flex-1 mt-5 px-4">
             <SearchBar
               onSubmit={() => router.push("/search")}
               placeholder="Search for a movie"
@@ -56,15 +57,12 @@ export default function Index() {
 
               <FlatList
                 data={movies}
-                renderItem={({ item }) => (
-                  <Text className="text-white text-sm">{item.title}</Text>
-                )}
+                renderItem={({ item }) => <MovieCard {...item} />}
                 keyExtractor={(item) => item.id}
                 numColumns={3}
                 columnWrapperStyle={{
                   justifyContent: "flex-start",
                   gap: 20,
-                  paddingRight: 5,
                   marginBottom: 10,
                 }}
                 className="mt-2 pb-32"
