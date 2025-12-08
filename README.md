@@ -4,10 +4,21 @@ Moviesto is a mobile movie discovery app built with Expo Router, NativeWind, and
 
 ## Preview
 
-<p align="center">
-  <img src="./assets/images/preview_home.png" alt="Moviesto home screen" width="320" />
-  <img src="./assets/images/preview_search.png" alt="Moviesto search screen" width="320" />
-</p>
+<table>
+  <tr>
+    <td align="center" width="33%">
+      <img src="./assets/images/preview_home.png" alt="Moviesto home screen" width="260" />
+      <div>Home</div>
+    </td>
+    <td align="center" width="33%">
+      <img src="./assets/images/preview_search.png" alt="Moviesto search screen" width="260" />
+      <div>Search</div>
+    </td>
+    <td align="center" width="33%">
+      <div><em>More previews coming soon</em></div>
+    </td>
+  </tr>
+</table>
 
 ## Features
 
