@@ -4,17 +4,19 @@ import { TextInput, View } from "react-native";
 interface SearchBarProps {
   onSubmit?: () => void;
   placeholder: string;
+  value: string;
+  onChangeText: (text: string) => void;
 }
 
-const SearchBar = ({ placeholder, onSubmit }: SearchBarProps) => {
+const SearchBar = ({ placeholder, onSubmit, value, onChangeText }: SearchBarProps) => {
   return (
     <View className="flex-row items-center bg-dark-200 rounded-full px-5 py-4">
       <Ionicons name="search" size={24} color="#A8B5DB" />
       <TextInput
         onSubmitEditing={onSubmit}
         placeholder={placeholder}
-        value=""
-        onChangeText={() => {}}
+        value={value}
+        onChangeText={onChangeText}
         placeholderTextColor="#A8B5DB"
         className="flex-1 ml-2 text-white"
       />
