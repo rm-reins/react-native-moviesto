@@ -1,5 +1,4 @@
-import MovieCard from "@/components/MovieCard";
-import SearchBar from "@/components/SearchBar";
+import { MovieCard } from "@/components";
 import { fetchMovies } from "@/services/api";
 import useFetch from "@/services/hooks/useFetch";
 import { LinearGradient } from "expo-linear-gradient";
@@ -45,10 +44,9 @@ export default function Index() {
           <Text>Error: {moviesError?.message}</Text>
         ) : (
           <View className="flex-1 mt-5 px-4">
-            <SearchBar
-              onSubmit={() => router.push("/search")}
-              placeholder="Search for a movie"
-            />
+            <Text className="text-3xl text-accent font-bold text-center">
+              Welcome to Moviesto!
+            </Text>
 
             <>
               <Text className="text-lg text-white font-bold mt-5 mb-3">
