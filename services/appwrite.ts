@@ -7,7 +7,7 @@ const databaseId = process.env.EXPO_PUBLIC_APPWRITE_DATABASE_ID!;
 const client = new Client().setEndpoint(endpoint).setProject(projectId);
 const tablesDb = new TablesDB(client);
 
-export async function updateSearchCount(query: string, movie?: Movie) {
+async function updateSearchCount(query: string, movie?: Movie) {
   if (!query?.trim() || !movie) {
     return;
   }
@@ -50,3 +50,21 @@ export async function updateSearchCount(query: string, movie?: Movie) {
     throw error;
   }
 }
+
+async function getTrendingMovies(): Promise<TrendingMovie[] | undefined> {
+  try {
+    const result = await tablesDb.listRows({
+      databaseId,
+      tableId: "metrics",
+      queries: [Query.limit(5), Query.orderDesc("count")],
+      total: false,
+    });
+
+    return result.rows as unknown as TrendingMovie[];
+  } catch (error) {
+    console.warn("getTrendingMovies response", error);
+    throw error;
+  }
+}
+
+export { getTrendingMovies, updateSearchCount };

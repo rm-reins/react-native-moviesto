@@ -7,7 +7,7 @@ export const TMDB_CONFIG = {
   },
 };
 
-export const fetchMovies = async ({ query }: { query: string }) => {
+async function fetchMovies({ query }: { query: string }) {
   const endpoint = query
     ? `${TMDB_CONFIG.BASE_URL}/search/movie?query=${encodeURIComponent(query)}`
     : `${TMDB_CONFIG.BASE_URL}/discover/movie?sort_by=popularity.desc`;
@@ -27,4 +27,25 @@ export const fetchMovies = async ({ query }: { query: string }) => {
   const data = await response.json();
 
   return data.results;
-};
+}
+
+async function fetchMovieDetails(movieId: string) {
+  try {
+    const response = await fetch(
+      `${TMDB_CONFIG.BASE_URL}/movie/${movieId}?api_key=${TMDB_CONFIG.API_KEY}`,
+      {
+        method: "GET",
+        headers: TMDB_CONFIG.headers,
+      }
+    );
+
+    const data = await response.json();
+
+    return data;
+  } catch (error) {
+    console.warn("fetchMovieDetails output", error);
+    throw error;
+  }
+}
+
+export { fetchMovieDetails, fetchMovies };
